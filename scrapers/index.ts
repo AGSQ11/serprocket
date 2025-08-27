@@ -1,6 +1,6 @@
 import scrapingAnt from './services/scrapingant';
 import scrapingRobot from './services/scrapingrobot';
-import scrapingRobot from './services/rtengy';
+import rtEngy from './services/rtengy';
 import serpapi from './services/serpapi';
 import serply from './services/serply';
 import spaceserp from './services/spaceserp';
