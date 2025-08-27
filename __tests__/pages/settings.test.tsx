@@ -14,7 +14,7 @@ describe('Settings Page', () => {
         fetchMock.resetMocks();
     });
 
-    it('should save multiple scraping robot api keys', async () => {
+    it('should send the correct payload when updating settings', async () => {
         const settingsWithScrapingRobot = {
             ...dummySettings,
             scraper_type: 'scrapingrobot',
@@ -26,7 +26,7 @@ describe('Settings Page', () => {
             { data: { settings: settingsWithScrapingRobot }, isLoading: false, isSuccess: true },
         ));
 
-        const { rerender } = render(
+        render(
             <QueryClientProvider client={queryClient}>
                 <Settings closeSettings={() => { }} />
                 <Toaster />
@@ -50,18 +50,14 @@ describe('Settings Page', () => {
         const newKeyInput = inputs[inputs.length - 1];
         fireEvent.change(newKeyInput, { target: { value: 'new_key' } });
 
-        fetchMock.mockResponseOnce(JSON.stringify({
-            settings: {
-                ...settingsWithScrapingRobot,
-                scaping_api: ['initial_key', 'new_key'],
-            }
-        }));
+        fetchMock.mockResponseOnce(JSON.stringify({}));
 
         const saveButton = screen.getByText('Update Settings');
         fireEvent.click(saveButton);
 
         await waitFor(() => {
             expect(fetchMock).toHaveBeenCalledWith(expect.any(String), expect.objectContaining({
+                method: 'PUT',
                 body: JSON.stringify({
                     settings: {
                         ...settingsWithScrapingRobot,
