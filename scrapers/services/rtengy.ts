@@ -1,5 +1,5 @@
 const rtEngy:ScraperSettings = {
-   id: 'scrapingrobot',
+   id: 'rtengy',
    name: 'RT - ENGY Proxy',
    website: 'rt.enginyr.ing',
    scrapeURL: (keyword, settings, countryData) => {
