@@ -42,14 +42,8 @@ const updateSettings = async (req: NextApiRequest, res: NextApiResponse<Settings
    }
    try {
       const cryptr = new Cryptr(process.env.SECRET as string);
-      let scaping_api_to_save: string[] = [];
-      const scaping_api_from_client = settings.scaping_api;
-
-      if (Array.isArray(scaping_api_from_client)) {
-         scaping_api_to_save = scaping_api_from_client.map((key: string) => (key ? cryptr.encrypt(key.trim()) : ''));
-      } else if (typeof scaping_api_from_client === 'string' && scaping_api_from_client) {
-         scaping_api_to_save = [cryptr.encrypt(scaping_api_from_client.trim())];
-      }
+      const scaping_api_from_client = (settings.scaping_api as string[]) || [];
+      const scaping_api_to_save = scaping_api_from_client.map((key: string) => (key ? cryptr.encrypt(key.trim()) : ''));
       const smtp_password = settings.smtp_password ? cryptr.encrypt(settings.smtp_password.trim()) : '';
       const search_console_client_email = settings.search_console_client_email ? cryptr.encrypt(settings.search_console_client_email.trim()) : '';
       const search_console_private_key = settings.search_console_private_key ? cryptr.encrypt(settings.search_console_private_key.trim()) : '';
